@@ -8,7 +8,6 @@
 
 namespace Farmani\SwooleRedis;
 
-use OpenSwoole\Coroutine\Channel;
 use Illuminate\Support\Facades\Log;
 use OpenSwoole\Core\Coroutine\Client\RedisClientFactory;
 use OpenSwoole\Core\Coroutine\Client\RedisConfig;
@@ -17,8 +16,6 @@ use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 class SwooleRedisPool
 {
     protected ClientPool $pool;
-
-    protected $pushTime = 0;
 
     public array $config = [
         'host' => '127.0.0.1',
@@ -32,7 +29,7 @@ class SwooleRedisPool
         'retry_times' => 3,
     ];
 
-    public function __construct($config, $autoFill = false)
+    public function __construct($config)
     {
         $this->config = array_merge($this->config, $config);
         $config = (new RedisConfig())
@@ -54,25 +51,20 @@ class SwooleRedisPool
      */
     public function get()
     {
-        $re_i = -1;
+        $retry = -1;
 
-        back:
-        $re_i++;
-
-        $redis = $this->pool->get();
-
-        if ($redis->connected === true && $redis->errCode === 0) {
-            return $redis;
-        } else {
-            if ($re_i <= $this->config['retry_times']) {
-                $this->dumpError("redis-reconnect{$re_i}，[errCode：{$redis->errCode}，errMsg：{$redis->errMsg}]");
-
-                $redis->close();
-                unset($redis);
-                goto back;
+        while (++$retry <= $this->config['retry_times']) {
+            $redis = $this->pool->get();
+            if ($redis->connected === true && $redis->errCode === 0) {
+                return $redis;
             }
-            $this->dumpError('Redis reconnection failed');
+
+            $this->dumpError("redis-reconnect{$retry}，[errCode：{$redis->errCode}，errMsg：{$redis->errMsg}]");
+            $redis->close();
+            unset($redis);
         }
+
+        $this->dumpError('Redis reconnection failed');
     }
 
     /**
@@ -84,5 +76,4 @@ class SwooleRedisPool
     {
         Log::error(date('Y-m-d H:i:s', time())."：{$msg}");
     }
-
 }
