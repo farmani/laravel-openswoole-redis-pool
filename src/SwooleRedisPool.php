@@ -18,11 +18,7 @@ class SwooleRedisPool
     protected ClientPool $pool;
 
     public array $config = [
-        'host' => '127.0.0.1',
-        'port' => 6379,
-        'auth' => '',
-        'dbIndex' => 0,
-        'poolSize' => 64,
+        'pool_size' => 64,
         'read_timeout' => 0.0,
         'timeout' => 0.0,
         'retry_interval' => 100,
@@ -33,16 +29,16 @@ class SwooleRedisPool
     {
         $this->config = array_merge($this->config, $config);
         $config = (new RedisConfig())
-            ->withDbIndex($this->config['dbIndex'])
+            ->withHost(config('database.redis.'.config('cache.redis_pool.connection').'.host'))
+            ->withPort(config('database.redis.'.config('cache.redis_pool.connection').'.port'))
+            ->withAuth(config('database.redis.'.config('cache.redis_pool.connection').'.password'))
+            ->withDbIndex(config('database.redis.'.config('cache.redis_pool.connection').'.database'))
             ->withTimeout($this->config['timeout'])
             ->withReadTimeout($this->config['read_timeout'])
-            ->withRetryInterval($this->config['retry_interval'])
-            ->withHost($this->config['host'])
-            ->withPort($this->config['port'])
-            ->withAuth($this->config['auth']);
+            ->withRetryInterval($this->config['retry_interval']);
 
 
-        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['poolMax']);
+        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['pool_size']);
         $this->pool->fill();
     }
 
