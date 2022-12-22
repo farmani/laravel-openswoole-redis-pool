@@ -19,7 +19,11 @@
   "require": {
     "php": ">=8.0",
     "ext-openswoole": ">=22.0",
-    "illuminate/support": "^8.0|^9.0"
+    "illuminate/support": "^8.0|^9.0",
+    "illuminate/redis": "^9.45",
+    "illuminate/cache": "^9.45",
+    "illuminate/session": "^9.45",
+    "openswoole/core": "^22.0"
   },
   "require-dev": {
     "openswoole/ide-helper": "~22.0.0"

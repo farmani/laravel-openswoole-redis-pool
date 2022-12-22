@@ -3,11 +3,12 @@
 namespace Farmani\SwooleRedis;
 
 use Illuminate\Cache\RedisStore;
+use Illuminate\Contracts\Redis\Factory;
+use Illuminate\Redis\Connections\Connection;
 use Swoole\Coroutine\Redis;
 
 class SwooleRedisStoreBasic extends RedisStore
 {
-
     public function __construct()
     {
         $this->redis = new Redis();
@@ -18,9 +19,9 @@ class SwooleRedisStoreBasic extends RedisStore
     /**
      * Get the Redis connection instance.
      *
-     * @return \Predis\ClientInterface
+     * @return Factory|Connection|Redis
      */
-    public function connection()
+    public function connection(): Connection|Redis|Factory
     {
         // load the config or use the default
         $config = config('database.redis.' . $this->connection, [

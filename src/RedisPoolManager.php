@@ -8,21 +8,13 @@ use Illuminate\Contracts\Redis\Factory;
 
 class RedisPoolManager implements Factory
 {
-    /**
-     * The Redis server configurations.
-     *
-     * @var array
-     */
-    protected $config;
 
     /**
      * The Redis connections.
      *
      * @var mixed
      */
-    protected $connections;
-
-    protected $autoFill;
+    protected mixed $connections;
 
     /**
      * Create a new Redis manager instance.
@@ -30,10 +22,8 @@ class RedisPoolManager implements Factory
      * @param  array  $config
      * @param  bool   $autoFill
      */
-    public function __construct(array $config, $autoFill = false)
+    public function __construct(protected array $config, protected bool $autoFill = false)
     {
-        $this->config = $config;
-        $this->autoFill = $autoFill;
     }
 
     /**
@@ -43,7 +33,7 @@ class RedisPoolManager implements Factory
      *
      * @return SwooleRedisPoolConnection|Connection|mixed
      */
-    public function connection($name = null)
+    public function connection($name = null): mixed
     {
         $name = $name ?: 'default';
         if (isset($this->connections[$name])) {
@@ -55,14 +45,11 @@ class RedisPoolManager implements Factory
 
     /**
      * Resolve the given connection by name.
+     * @param $name
      *
-     * @param  string|null  $name
-     *
-     * @return \Illuminate\Redis\Connections\Connection
-     *
-     * @throws \InvalidArgumentException
+     * @return Connection|SwooleRedisPoolConnection
      */
-    public function resolve($name = null)
+    public function resolve($name = null): Connection|SwooleRedisPoolConnection
     {
         $name = $name ?: 'default';
 
@@ -81,19 +68,19 @@ class RedisPoolManager implements Factory
      * @param $config
      * @param $options
      *
-     * @return \Illuminate\Redis\Connections\Connection
+     * @return Connection|SwooleRedisPoolConnection
      */
-    public function connect($config, $options = [])
+    public function connect($config, $options = []): Connection|SwooleRedisPoolConnection
     {
         return new SwooleRedisPoolConnection(new SwooleRedisPool($config, $this->autoFill));
     }
 
     /**
-     * Return all of the created connections.
+     * Return all the created connections.
      *
      * @return array
      */
-    public function connections()
+    public function connections(): array
     {
         return $this->connections;
     }

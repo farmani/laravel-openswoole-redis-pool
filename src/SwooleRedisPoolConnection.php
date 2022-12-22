@@ -181,7 +181,7 @@ class SwooleRedisPoolConnection extends Connection
      * @param  string $method
      * @return void
      */
-    public function createSubscription($channels, Closure $callback, $method = 'subscribe')
+    public function createSubscription($channels, Closure $callback, $method = 'subscribe'): void
     {
         $loop = $this->pubSubLoop();
 

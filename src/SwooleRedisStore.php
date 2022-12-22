@@ -40,9 +40,8 @@ class SwooleRedisStore extends RedisStore
     {
         $lua = "return redis.call('exists',KEYS[1])<1 and redis.call('setex',KEYS[1],ARGV[2],ARGV[1])";
 
-        $result = (bool)$this->connection()->eval(
+        return (bool)$this->connection()->eval(
             $lua, [$this->prefix . $key, $this->serialize($value), (int)max(1, $minutes * 60)], 1
         );
-        return $result;
     }
 }
