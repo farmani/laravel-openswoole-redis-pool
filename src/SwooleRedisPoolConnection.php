@@ -162,14 +162,8 @@ use Illuminate\Redis\Connections\Connection;
  */
 class SwooleRedisPoolConnection extends Connection
 {
-    /**
-     * @var SwooleRedisPool
-     */
-    protected $pool;
-
-    public function __construct($pool)
+    public function __construct(protected SwooleRedisPool $pool)
     {
-        $this->pool = $pool;
         $this->client = null;
     }
 
@@ -201,7 +195,7 @@ class SwooleRedisPoolConnection extends Connection
      *
      * @return mixed
      */
-    public function client()
+    public function client(): mixed
     {
         return $this->pool->get();
     }

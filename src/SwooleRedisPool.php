@@ -25,11 +25,11 @@ class SwooleRedisPool
         'poolSize' => 64,
         'read_timeout' => 0.0,
         'timeout' => 0.0,
-        'retry_interval' => 0,
+        'retry_interval' => 100,
         'retry_times' => 3,
     ];
 
-    public function __construct($config)
+    public function __construct($config, $options)
     {
         $this->config = array_merge($this->config, $config);
         $config = (new RedisConfig())
@@ -65,6 +65,11 @@ class SwooleRedisPool
         }
 
         $this->dumpError('Redis reconnection failed');
+    }
+
+    public function put($redis): void
+    {
+        $this->pool->put($redis);
     }
 
     /**

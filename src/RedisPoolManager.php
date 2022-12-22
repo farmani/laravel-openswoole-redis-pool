@@ -8,7 +8,6 @@ use Illuminate\Contracts\Redis\Factory;
 
 class RedisPoolManager implements Factory
 {
-
     /**
      * The Redis connections.
      *
@@ -20,9 +19,8 @@ class RedisPoolManager implements Factory
      * Create a new Redis manager instance.
      *
      * @param  array  $config
-     * @param  bool   $autoFill
      */
-    public function __construct(protected array $config, protected bool $autoFill = false)
+    public function __construct(protected array $config)
     {
     }
 
@@ -72,7 +70,7 @@ class RedisPoolManager implements Factory
      */
     public function connect($config, $options = []): Connection|SwooleRedisPoolConnection
     {
-        return new SwooleRedisPoolConnection(new SwooleRedisPool($config, $this->autoFill));
+        return new SwooleRedisPoolConnection(new SwooleRedisPool($config, $options));
     }
 
     /**
