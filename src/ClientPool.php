@@ -2,7 +2,7 @@
 
 namespace Farmani\OpenSwooleRedis;
 
-use co;
+use OpenSwoole\Coroutine as Co;
 use OpenSwoole\Core\Coroutine\Client\RedisConfig;
 use OpenSwoole\Coroutine;
 use OpenSwoole\Coroutine\Channel;
@@ -132,7 +132,7 @@ class ClientPool
 
         while (1) {
             if ($this->active > 0) {
-                co::sleep($this->idleInterval);
+                Co::usleep($this->idleInterval);
                 continue;
             }
             if (!$this->pool->isEmpty()) {
@@ -165,7 +165,7 @@ class ClientPool
     {
         Coroutine::create(function () {
             while ($this->pool) {
-                co::sleep($this->heartbeat);
+                Co::usleep($this->heartbeat);
                 $client = $this->get();
                 $client->heartbeat();
                 $this->put($client);

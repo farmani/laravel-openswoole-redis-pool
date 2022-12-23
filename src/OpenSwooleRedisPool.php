@@ -31,10 +31,10 @@ class OpenSwooleRedisPool
             'min' => 16,
             'max' => 128,
             'idle_time' => -1,
-            'idle_interval' => 1,
+            'idle_interval' => 1000,
             'retry_interval' => 10,
             'retry_times' => 3,
-            'heartbeat' => 3,
+            'heartbeat' => 3000,
         ],
     ];
 
