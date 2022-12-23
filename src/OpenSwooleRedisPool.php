@@ -8,6 +8,7 @@
 
 namespace Farmani\OpenSwooleRedis;
 
+use co;
 use Farmani\OpenSwooleRedis\Exceptions\RedisConnectionNotFoundException;
 use Illuminate\Support\Facades\Log;
 use OpenSwoole\Core\Coroutine\Client\RedisClientFactory;
@@ -29,9 +30,9 @@ class OpenSwooleRedisPool
         'pool' => [
             'min' => 16,
             'max' => 128,
-            'idle_time' => 15, // TODO: idle time should implement
-            'idle_interval' => 3, // TODO: idle interval should implement
-            'retry_interval' => 100, // TODO: retry interval should implement
+            'idle_time' => -1,
+            'idle_interval' => 1,
+            'retry_interval' => 100,
             'retry_times' => 3,
             'heartbeat' => 3,
         ],
@@ -57,6 +58,7 @@ class OpenSwooleRedisPool
             $this->config['pool']['max'],
             $this->config['pool']['heartbeat']
         );
+        $this->pool->setIdleInterval($this->config['pool']['idle_interval']);
 
         if ($fill) {
             $this->pool->fill();
@@ -71,7 +73,7 @@ class OpenSwooleRedisPool
         $retry = -1;
 
         while (++$retry <= $this->config['pool']['retry_times']) {
-            $redis = $this->pool->get();
+            $redis = $this->pool->get($this->config['pool']['idle_time']);
             if ($redis->connected === true && $redis->errCode === 0) {
                 return $redis;
             }
@@ -79,6 +81,7 @@ class OpenSwooleRedisPool
             $this->dumpError("redis-reconnect{$retry}，[errCode：{$redis->errCode}，errMsg：{$redis->errMsg}]");
             $redis->close();
             unset($redis);
+            co::usleep($this->config['pool']['retry_interval']);
         }
 
         throw new RedisConnectionNotFoundException('There is not any available Redis connection.');

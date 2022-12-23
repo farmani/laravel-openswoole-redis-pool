@@ -42,6 +42,11 @@ class ClientPool
     private $factory;
 
     /**
+     * @var
+     */
+    private $idleInterval;
+
+    /**
      * @param               $factory
      * @param  RedisConfig  $config
      * @param  int          $min
@@ -127,7 +132,7 @@ class ClientPool
 
         while (1) {
             if ($this->active > 0) {
-                co::sleep(1);
+                co::sleep($this->idleInterval);
                 continue;
             }
             if (!$this->pool->isEmpty()) {
@@ -166,5 +171,15 @@ class ClientPool
                 $this->put($client);
             }
         });
+    }
+
+    /**
+     * @param  int  $second
+     *
+     * @return void
+     */
+    public function setIdleInterval(int $second): void
+    {
+        $this->idleInterval = $second;
     }
 }
