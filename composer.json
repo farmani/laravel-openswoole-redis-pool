@@ -30,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "\\Farmani\\OpenSwooleRedis\\": "src"
+      "Farmani\\OpenSwooleRedis\\": "src"
     }
   },
   "autoload-dev": {
@@ -38,7 +38,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "\\Farmani\\OpenSwooleRedis\\OpenSwooleRedisServiceProvider"
+        "Farmani\\OpenSwooleRedis\\OpenSwooleRedisServiceProvider"
       ]
     }
   }
