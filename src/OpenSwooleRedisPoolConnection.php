@@ -6,7 +6,7 @@
  * Time: 1:42 PM
  */
 
-namespace Farmani\SwooleRedis;
+namespace Farmani\OpenSwooleRedis;
 
 
 use Closure;
@@ -160,9 +160,9 @@ use Illuminate\Redis\Connections\Connection;
  * @method array georadius($key, $longitude, $latitude, $radius, $unit, array $options = null)
  * @method array georadiusbymember($key, $member, $radius, $unit, array $options = null)
  */
-class SwooleRedisPoolConnection extends Connection
+class OpenSwooleRedisPoolConnection extends Connection
 {
-    public function __construct(protected SwooleRedisPool $pool)
+    public function __construct(protected OpenSwooleRedisPool $pool)
     {
         $this->client = null;
     }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Farmani\SwooleRedis;
+namespace Farmani\OpenSwooleRedis;
 
 use Illuminate\Cache\RedisStore;
 use Illuminate\Contracts\Redis\Factory;
 use Illuminate\Redis\Connections\Connection;
 use Swoole\Coroutine\Redis;
 
-class SwooleRedisStoreBasic extends RedisStore
+class OpenSwooleRedisStoreBasic extends RedisStore
 {
     public function __construct()
     {

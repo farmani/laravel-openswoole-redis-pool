@@ -6,14 +6,14 @@
  * Time: 11:26 AM
  */
 
-namespace Farmani\SwooleRedis;
+namespace Farmani\OpenSwooleRedis;
 
 use Illuminate\Support\Facades\Log;
 use OpenSwoole\Core\Coroutine\Client\RedisClientFactory;
 use OpenSwoole\Core\Coroutine\Client\RedisConfig;
 use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 
-class SwooleRedisPool
+class OpenSwooleRedisPool
 {
     protected ClientPool $pool;
 

@@ -1,5 +1,5 @@
 {
-  "name": "farmani/laravel-swoole-redis-pool",
+  "name": "farmani/laravel-openswoole-redis-pool",
   "description": "Laravel package to provide swoole redis pool integration, laravel redis pool cache and session driver. Aims to avoid redis server timeout exception",
   "license": "MIT",
   "keywords": [
@@ -38,7 +38,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Farmani\\SwooleRedis\\SwooleRedisServiceProvider"
+        "OpenSwooleRedisServiceProvider"
       ]
     }
   }

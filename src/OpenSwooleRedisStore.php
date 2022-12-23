@@ -1,10 +1,10 @@
 <?php
 
-namespace Farmani\SwooleRedis;
+namespace Farmani\OpenSwooleRedis;
 
 use Illuminate\Cache\RedisStore;
 
-class SwooleRedisStore extends RedisStore
+class OpenSwooleRedisStore extends RedisStore
 {
 
     /**
@@ -15,7 +15,7 @@ class SwooleRedisStore extends RedisStore
     public $config = [];
 
     /**
-     * SwooleRedisStore constructor.
+     * OpenSwooleRedisStore constructor.
      * @param RedisPoolManager $redis
      * @param string $prefix
      * @param string $connection

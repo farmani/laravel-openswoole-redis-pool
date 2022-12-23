@@ -1,6 +1,6 @@
 <?php
 
-namespace Farmani\SwooleRedis;
+namespace Farmani\OpenSwooleRedis;
 
 use Illuminate\Redis\Connections\Connection;
 use InvalidArgumentException;
@@ -29,7 +29,7 @@ class RedisPoolManager implements Factory
      *
      * @param  string|null  $name
      *
-     * @return SwooleRedisPoolConnection|Connection|mixed
+     * @return OpenSwooleRedisPoolConnection|Connection|mixed
      */
     public function connection($name = null): mixed
     {
@@ -43,11 +43,12 @@ class RedisPoolManager implements Factory
 
     /**
      * Resolve the given connection by name.
+     *
      * @param $name
      *
-     * @return Connection|SwooleRedisPoolConnection
+     * @return Connection|OpenSwooleRedisPoolConnection
      */
-    public function resolve($name = null): Connection|SwooleRedisPoolConnection
+    public function resolve($name = null): Connection|OpenSwooleRedisPoolConnection
     {
         $name = $name ?: 'default';
 
@@ -66,11 +67,11 @@ class RedisPoolManager implements Factory
      * @param $config
      * @param $options
      *
-     * @return Connection|SwooleRedisPoolConnection
+     * @return Connection|OpenSwooleRedisPoolConnection
      */
-    public function connect($config, $options = []): Connection|SwooleRedisPoolConnection
+    public function connect($config, $options = []): Connection|OpenSwooleRedisPoolConnection
     {
-        return new SwooleRedisPoolConnection(new SwooleRedisPool($config, $options));
+        return new OpenSwooleRedisPoolConnection(new OpenSwooleRedisPool($config, $options));
     }
 
     /**
