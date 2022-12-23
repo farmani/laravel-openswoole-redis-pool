@@ -2,6 +2,7 @@
 
 namespace Farmani\OpenSwooleRedis;
 
+use Farmani\OpenSwooleRedis\Exceptions\InvalidRedisConnectionException;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Session\CacheBasedSessionHandler;
 use Illuminate\Session\SessionManager;
@@ -35,8 +36,11 @@ class OpenSwooleRedisServiceProvider extends ServiceProvider
     protected function registerRedisPoolStore()
     {
         $this->app->singleton(RedisPoolManager::class, function ($app) {
-            $config = $app->make('config')->get('database.redis', []);
-            return new RedisPoolManager($config, false);
+            $config = $app->make('config')->get('database.redis_pool', []);
+            if (empty($config)) {
+                throw new InvalidRedisConnectionException('redis_pool database configuration not found');
+            }
+            return new RedisPoolManager($config);
         });
 
         $this->app->alias(RedisPoolManager::class, 'redis_pool');

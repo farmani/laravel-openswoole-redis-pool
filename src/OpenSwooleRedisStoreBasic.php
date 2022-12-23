@@ -28,7 +28,7 @@ class OpenSwooleRedisStoreBasic extends RedisStore
             'host'     => env('REDIS_HOST', 'localhost'),
             'password' => env('REDIS_PASSWORD', null),
             'port'     => env('REDIS_PORT', 6379),
-            'database' => 0,
+            'database' => env('REDIS_DB', 0),
         ]);
         $this->redis->connect($config['host'], $config['port']);
         if ($config['password']) {

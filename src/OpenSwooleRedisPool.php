@@ -8,24 +8,28 @@
 
 namespace Farmani\OpenSwooleRedis;
 
+use Farmani\OpenSwooleRedis\Exceptions\RedisConnectionNotFoundException;
 use Illuminate\Support\Facades\Log;
 use OpenSwoole\Core\Coroutine\Client\RedisClientFactory;
 use OpenSwoole\Core\Coroutine\Client\RedisConfig;
-use OpenSwoole\Core\Coroutine\Pool\ClientPool;
 
 class OpenSwooleRedisPool
 {
     protected ClientPool $pool;
 
     public array $config = [
-        'pool_size' => 64,
+        'pool_min' => 16,
+        'pool_max' => 128,
+        'pool_idle_time' => 15,
+        'pool_idle_interval' => 3,
+
         'read_timeout' => 0.0,
         'timeout' => 0.0,
         'retry_interval' => 100,
         'retry_times' => 3,
     ];
 
-    public function __construct($config, $options)
+    public function __construct($config, $fill = false)
     {
         $this->config = array_merge($this->config, $config);
         $config = (new RedisConfig())
@@ -37,9 +41,10 @@ class OpenSwooleRedisPool
             ->withReadTimeout($this->config['read_timeout'])
             ->withRetryInterval($this->config['retry_interval']);
 
-
-        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['pool_size']);
-        $this->pool->fill();
+        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['pool_min'], $this->config['pool_max']);
+        if ($fill) {
+            $this->pool->fill();
+        }
     }
 
     /**
@@ -60,7 +65,7 @@ class OpenSwooleRedisPool
             unset($redis);
         }
 
-        $this->dumpError('Redis reconnection failed');
+        throw new RedisConnectionNotFoundException('There is not any available Redis connection.');
     }
 
     public function put($redis): void

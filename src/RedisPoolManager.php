@@ -71,7 +71,7 @@ class RedisPoolManager implements Factory
      */
     public function connect($config, $options = []): Connection|OpenSwooleRedisPoolConnection
     {
-        return new OpenSwooleRedisPoolConnection(new OpenSwooleRedisPool($config, $options));
+        return new OpenSwooleRedisPoolConnection(new OpenSwooleRedisPool($config, true));
     }
 
     /**
