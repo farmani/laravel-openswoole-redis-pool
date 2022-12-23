@@ -1,13 +1,6 @@
 <?php
-/**
- * 功能说明
- * User: falco
- * Date: 4/26/21
- * Time: 1:42 PM
- */
 
 namespace Farmani\OpenSwooleRedis;
-
 
 use Closure;
 use Illuminate\Redis\Connections\Connection;
@@ -170,16 +163,17 @@ class OpenSwooleRedisPoolConnection extends Connection
     /**
      * Subscribe to a set of given channels for messages.
      *
-     * @param  array|string $channels
-     * @param  \Closure $callback
-     * @param  string $method
+     * @param  array|string  $channels
+     * @param  \Closure      $callback
+     * @param  string        $method
+     *
      * @return void
      */
     public function createSubscription($channels, Closure $callback, $method = 'subscribe'): void
     {
         $loop = $this->pubSubLoop();
 
-        call_user_func_array([$loop, $method], (array) $channels);
+        call_user_func_array([$loop, $method], (array)$channels);
 
         foreach ($loop as $message) {
             if ($message->kind === 'message' || $message->kind === 'pmessage') {
@@ -204,7 +198,8 @@ class OpenSwooleRedisPoolConnection extends Connection
      * Pass other method calls down to the underlying client.
      *
      * @param  string  $method
-     * @param  array  $parameters
+     * @param  array   $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)
