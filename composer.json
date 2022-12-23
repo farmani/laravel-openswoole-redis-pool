@@ -38,7 +38,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "OpenSwooleRedisServiceProvider"
+        "Farmani\\OpenSwooleRedis\\OpenSwooleRedisServiceProvider"
       ]
     }
   }
