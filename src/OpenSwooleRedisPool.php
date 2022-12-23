@@ -32,9 +32,9 @@ class OpenSwooleRedisPool
             'max' => 128,
             'idle_time' => -1,
             'idle_interval' => 1000,
+            'heartbeat' => 3000,
             'retry_interval' => 10,
             'retry_times' => 3,
-            'heartbeat' => 3000,
         ],
     ];
 
