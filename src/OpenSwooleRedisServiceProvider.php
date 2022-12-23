@@ -36,8 +36,8 @@ class OpenSwooleRedisServiceProvider extends ServiceProvider
     protected function registerRedisPoolStore()
     {
         $this->app->singleton(RedisPoolManager::class, function ($app) {
-            $config = $app->make('config')->get('database.redis_pool', []);
-            if (empty($config)) {
+            $config = $app->make('config')->get('database.redis', []);
+            if (!isset($config['pool'])) {
                 throw new InvalidRedisConnectionException('redis_pool database configuration not found');
             }
             return new RedisPoolManager($config);

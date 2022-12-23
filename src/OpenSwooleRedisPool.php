@@ -18,30 +18,38 @@ class OpenSwooleRedisPool
     protected ClientPool $pool;
 
     public array $config = [
-        'pool_min' => 16,
-        'pool_max' => 128,
-        'pool_idle_time' => 15,
-        'pool_idle_interval' => 3,
-
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'database' => '',
         'read_timeout' => 0.0,
         'timeout' => 0.0,
-        'retry_interval' => 100,
-        'retry_times' => 3,
+        'retry_interval' => 0,
+        'reserved' => '',
+        'pool' => [
+            'min' => 16,
+            'max' => 128,
+            'idle_time' => 15,
+            'idle_interval' => 3,
+            'retry_interval' => 100,
+            'retry_times' => 3,
+        ],
     ];
 
     public function __construct($config, $fill = false)
     {
         $this->config = array_merge($this->config, $config);
         $config = (new RedisConfig())
-            ->withHost(config('database.redis.'.config('cache.redis_pool.connection').'.host'))
-            ->withPort(config('database.redis.'.config('cache.redis_pool.connection').'.port'))
-            ->withAuth(config('database.redis.'.config('cache.redis_pool.connection').'.password'))
-            ->withDbIndex(config('database.redis.'.config('cache.redis_pool.connection').'.database'))
+            ->withHost($this->config['host'])
+            ->withPort($this->config['port'])
+            ->withAuth($this->config['password'])
+            ->withDbIndex($this->config['database'])
             ->withTimeout($this->config['timeout'])
             ->withReadTimeout($this->config['read_timeout'])
+            ->withReserved($this->config['reserved'])
             ->withRetryInterval($this->config['retry_interval']);
 
-        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['pool_min'], $this->config['pool_max']);
+        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['pool']['min'], $this->config['pool']['max']);
         if ($fill) {
             $this->pool->fill();
         }
@@ -54,7 +62,7 @@ class OpenSwooleRedisPool
     {
         $retry = -1;
 
-        while (++$retry <= $this->config['retry_times']) {
+        while (++$retry <= $this->config['pool']['retry_times']) {
             $redis = $this->pool->get();
             if ($redis->connected === true && $redis->errCode === 0) {
                 return $redis;
