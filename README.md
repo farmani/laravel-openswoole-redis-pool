@@ -2,18 +2,29 @@
 
 Laravel package to provide openswoole redis pool integration, laravel redis pool cache and session driver.
 
+change your default redis database configuration as follows:
+
 ```php
-public $config = [
-    'host' => '127.0.0.1',
-    'port' => 6379,
-    'auth' => '',
-    'dbIndex' => 0,
-    'poolSize' => 64,
-    'read_timeout' => 0.0,
-    'timeout' => 0.0,
-    'retry_interval' => 100,
-    'retry_times' => 3,
-];
+'default' => [
+    'url' => env('REDIS_URL'),
+    'host' => env('REDIS_HOST', 'redis.waptap.dev'),
+    'password' => env('REDIS_PASSWORD', null),
+    'port' => env('REDIS_PORT', '6379'),
+    'database' => env('REDIS_DB', '0'),
+    'read_timeout' => 3.0,
+    'timeout' => 15.0,
+    'retry_interval' => 0,
+    'reserved' => '',
+    'pool' => [
+        'min' => 128,
+        'max' => 128,
+        'idle_time' => -1,
+        'idle_interval' => 1000,
+        'heartbeat' => 3000,
+        'retry_interval' => 10,
+        'retry_times' => 3,
+    ],
+],
 ```
 
 ## install
