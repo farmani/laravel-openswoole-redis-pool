@@ -58,9 +58,7 @@ class RedisPoolManager implements Factory
             return $this->connect($this->config[$name], $options);
         }
 
-        throw new InvalidArgumentException(
-            "Redis connection [{$name}] not configured."
-        );
+        throw new InvalidArgumentException("Redis connection [{$name}] not configured.");
     }
 
     /**
