@@ -29,10 +29,11 @@ class OpenSwooleRedisPool
         'pool' => [
             'min' => 16,
             'max' => 128,
-            'idle_time' => 15,
-            'idle_interval' => 3,
-            'retry_interval' => 100,
+            'idle_time' => 15, // TODO: idle time should implement
+            'idle_interval' => 3, // TODO: idle interval should implement
+            'retry_interval' => 100, // TODO: retry interval should implement
             'retry_times' => 3,
+            'heartbeat' => 3,
         ],
     ];
 
@@ -49,7 +50,12 @@ class OpenSwooleRedisPool
             ->withReserved($this->config['reserved'])
             ->withRetryInterval($this->config['retry_interval']);
 
-        $this->pool = new ClientPool(RedisClientFactory::class, $config, $this->config['pool']['min'], $this->config['pool']['max']);
+        $this->pool = new ClientPool(
+            RedisClientFactory::class,
+            $config,
+            $this->config['pool']['min'],
+            $this->config['pool']['max'],
+            $this->config['pool']['heartbeat']);
         if ($fill) {
             $this->pool->fill();
         }

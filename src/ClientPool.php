@@ -46,14 +46,14 @@ class ClientPool
      * @param  RedisConfig  $config
      * @param  int          $min
      * @param  int          $max
-     * @param  bool         $heartbeat
+     * @param  int          $heartbeat
      */
     public function __construct(
         $factory,
         private RedisConfig $config,
         private readonly int $min = self::DEFAULT_MIN_SIZE,
         private readonly int $max = self::DEFAULT_MAX_SIZE,
-        private readonly bool $heartbeat = false
+        private readonly int $heartbeat = 0
     ) {
         $this->pool = new Channel($max);
         $this->num = 0;
@@ -65,7 +65,7 @@ class ClientPool
     }
 
     /**
-     * @param ?int $size
+     * @param ?int  $size
      *
      * @return void
      */
@@ -160,7 +160,7 @@ class ClientPool
     {
         Coroutine::create(function () {
             while ($this->pool) {
-                co::sleep(3);
+                co::sleep($this->heartbeat);
                 $client = $this->get();
                 $client->heartbeat();
                 $this->put($client);
