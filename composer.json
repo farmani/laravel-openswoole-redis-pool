@@ -1,13 +1,13 @@
 {
   "name": "farmani/laravel-openswoole-redis-pool",
-  "description": "Laravel package to provide swoole redis pool integration, laravel redis pool cache and session driver. Aims to avoid redis server timeout exception",
+  "description": "Laravel package to provide openswoole redis pool integration, laravel redis pool cache and session driver. Aims to avoid redis server timeout exception",
   "license": "MIT",
   "keywords": [
-    "laravel swoole redis pool",
-    "laravel seoole redis cache",
-    "laravel seoole session driver"
+    "laravel openswoole redis pool",
+    "laravel openswoole redis cache",
+    "laravel openswoole session driver"
   ],
-  "homepage": "https://github.com/farmani/laravel-swoole-redis-pool",
+  "homepage": "https://github.com/farmani/laravel-openswoole-redis-pool",
   "authors": [
     {
       "name": "Ramin Farmani",
