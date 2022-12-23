@@ -55,7 +55,9 @@ class OpenSwooleRedisPool
             $config,
             $this->config['pool']['min'],
             $this->config['pool']['max'],
-            $this->config['pool']['heartbeat']);
+            $this->config['pool']['heartbeat']
+        );
+
         if ($fill) {
             $this->pool->fill();
         }
