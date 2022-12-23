@@ -87,7 +87,7 @@ class ClientPool
      *
      * @return mixed
      */
-    public function get(float $timeout = -1)
+    public function get(float $timeout = -1): mixed
     {
         if ($this->pool->isEmpty() && $this->num < $this->max) {
             $this->make();
@@ -100,11 +100,11 @@ class ClientPool
 
     /**
      * @param $connection
-     * @param $isNew
+     * @param bool $isNew
      *
      * @return void
      */
-    public function put($connection, $isNew = false): void
+    public function put($connection, bool $isNew = false): void
     {
         if ($this->pool === null) {
             return;

@@ -43,7 +43,7 @@ class OpenSwooleRedisPool
         $this->config = array_merge($this->config, $config);
         $config = (new RedisConfig())
             ->withHost($this->config['host'])
-            ->withPort($this->config['port'])
+            ->withPort((int)$this->config['port'])
             ->withAuth($this->config['password'])
             ->withDbIndex($this->config['database'])
             ->withTimeout($this->config['timeout'])
